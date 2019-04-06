@@ -4,15 +4,14 @@ import morphdom from 'morphdom'
 class Callbag extends HTMLElement {
   constructor() {
     super()
-    this.shadow = this.attachShadow({mode: 'open'})
   }
 
   connectedCallback() {
     this.unsubscribe = subscribe(node => {
-      if (this.shadow.children.length === 0)
-        this.shadow.appendChild(node)
+      if (this.children.length === 0)
+        this.appendChild(node)
       else
-        morphdom(this.shadow.children[0], node)
+        morphdom(this.children[0], node)
     })(this.source)
   }
 
@@ -21,8 +20,8 @@ class Callbag extends HTMLElement {
       this.unsubscribe()
 
     window.requestAnimationFrame(() => {
-      while (this.shadow.firstChild)
-        this.shadow.removeChild(this.shadow.firstChild)
+      while (this.firstChild)
+        this.removeChild(this.firstChild)
     })
   }
 
